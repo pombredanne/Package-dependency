@@ -93,7 +93,7 @@ def solve(data, package, ignoreVersions=False):
         for dep in current['depends']:
             n = -1
             version_ok = False
-            while not version_ok and not ignoreVersions:
+            while not version_ok:
                 n += 1
                 '''print('{cur}: dependency №{n}: {p} {v}{ver}'.format(
                     cur=current['package'], n=n, v=dep[n]['version'][0], ver=dep[n]['version'][1],
@@ -101,14 +101,20 @@ def solve(data, package, ignoreVersions=False):
                 try:
                     need_version = LooseVersion(dep[n]['version'][1])
                     get_version = LooseVersion(data[dep[n]['name']]['version'])
-                except (IndexError, KeyError) as e:
+                except KeyError:
+                    pass
+                except IndexError:
                     error.append(dep)
                     break
-                if   dep[n]['version'][0] == '<<': version_ok = (get_version <  need_version)
-                elif dep[n]['version'][0] == '<=': version_ok = (get_version <= need_version)
-                elif dep[n]['version'][0] == '>>': version_ok = (get_version >  need_version)
-                elif dep[n]['version'][0] == '>=': version_ok = (get_version >= need_version)
-                elif dep[n]['version'][0] == '=' : version_ok = (get_version == need_version)
+                if not ignoreVersions:
+                    if   dep[n]['version'][0] == '<<': version_ok = (get_version <  need_version)
+                    elif dep[n]['version'][0] == '<=': version_ok = (get_version <= need_version)
+                    elif dep[n]['version'][0] == '>>': version_ok = (get_version >  need_version)
+                    elif dep[n]['version'][0] == '>=': version_ok = (get_version >= need_version)
+                    elif dep[n]['version'][0] == '=' : version_ok = (get_version == need_version)
+                else:
+                    version_ok = True
+
             else:
                 not_solved.append(data[dep[n]['name']])
         result.append(current['package'])
