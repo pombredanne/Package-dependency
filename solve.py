@@ -7,7 +7,8 @@ import dependencies
 parser = argparse.ArgumentParser(description='Search in repository and solve dependencies')
 parser.add_argument('data', metavar='D', type=str,
                     help='json file converted from Packages file')
-parser.add_argument('-V', dest='ignoreVersions', type=bool, help='ignore versions')
+parser.add_argument('-V', action='store_true', dest='ignoreVersions', default=False,
+                    help='ignore versions')
 
 args = parser.parse_args()
 data = args.data
