@@ -101,7 +101,7 @@ def solve(data, package, ignoreVersions=False):
                 try:
                     need_version = LooseVersion(dep[n]['version'][1])
                     get_version = LooseVersion(data[dep[n]['name']]['version'])
-                except IndexError:
+                except (IndexError, KeyError) as e:
                     error.append(dep)
                     break
                 if   dep[n]['version'][0] == '<<': version_ok = (get_version <  need_version)
