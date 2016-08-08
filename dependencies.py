@@ -45,17 +45,20 @@ def read_data(fName):
                     nd += 1
                     for package in i:
                         np += 1
-                        if ':' not in package:
-                            splitted = regex.split(package)
+                        splitted = regex.split(package)
+                        if len(splitted) != 1:  # python (>= 1.2.5), python3 (= 1.4.2)
                             name = splitted[0]
                             version = splitted[1] if len(splitted) > 1 else '>= 0.0.0'
                             version = version.split(' ')
-                        else:
+                        elif ':' in package:  # python:any, python3:any
                             splitted = package.split(':')
                             name = splitted[0]
                             version = splitted[1]
-                            if   version == 'any': version = '>= 0.0.0'
-                            else: version = '>= 0.0.0'
+                            if version == 'any':
+                                version = '>= 0.0.0'
+                        else:
+                            name = package
+                            version = '>= 0.0.0'
                         depends[nd][np] = {'version': version, 'name': name}
 
             keys = data.keys()
