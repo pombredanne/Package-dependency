@@ -46,3 +46,7 @@ How to use
     Usage: `solve.py [-V] D`<br/>
         `D` Packages **d**ata in json format<br/>
         `-V` Ignore **v**ersions
+
+Download packages data
+---
+[https://db.tt/PQaGrPc5](https://db.tt/PQaGrPc5) 366 MB unpacked (8 *.Packages, converted json and readable json)
